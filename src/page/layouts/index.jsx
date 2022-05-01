@@ -7,68 +7,38 @@ import { DesktopOutlined, PieChartOutlined, UserOutlined } from '@ant-design/ico
 const { Header, Content, Sider } = Layout
 
 const Layouts = (props) => {
-    const { count } = props
-    const [isShow, setIsShow] = useState(false)
-    const navigate = useNavigate()
-    const location = useLocation()
+    const [page, setPage] = useState(1)
     const handleTo = (url) => {
-        switch (url) {
-            case 1:
-                navigate('/layout/')
-                break;
-            case 2:
-                navigate('/layout/quiz')
-                break;
-            default:
-                navigate('/layout/dissection/' + count)
-                break;
-        }
+       setPage(url)
     }
     const { children } = props
-    useEffect(() => {
-        if (count === 4) {
-           setIsShow(true)
-        }
-    }, [count])
-    useEffect(() => {
-        if (location.pathname.includes('/layout/dissection')) {
-            setIsShow(false)
-        }
-    }, [location])
     return (
         <Layout className="lay" style={{ minHeight: '100vh' }}>
             <Sider className="sider">
-                <div className="logo">乐学中心</div>
+                <div className="logo">
+                   文件抽取系统
+                </div>
                 <Menu
                     theme="dark"
                     mode="inline"
-                    style={{ padding: 0 }}
+                    style={{ padding: 10 }}
                     defaultSelectedKeys={'teach'}
                 >
                     <Menu.Item key='teach' onClick={() => handleTo(1)} icon={<PieChartOutlined />} >
-                        课件
+                        上传申报书
                     </Menu.Item>
                     <Menu.Item key='quize' onClick={() => handleTo(2)} icon={<DesktopOutlined />}  >
-                        测试
-                    </Menu.Item>
-                    <Menu.Item className='diss' key="diss" onClick={() => handleTo(3)} icon={<UserOutlined />}>
-                        {
-                            isShow  ?
-                                <div className="msg">
-                                    { count }
-                                </div> : null
-                        }
-                        讨论
+                        查看申报书
                     </Menu.Item>
                 </Menu>
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{ padding: 0 }}>
-                    <Badge className='avatar'>
+                    {/* <Badge className='avatar'>
                         <Avatar shape="square" icon={<UserOutlined />} />
-                    </Badge>
+                    </Badge> */}
                 </Header>
-                <Content className='content' style={{ margin: '40px 16px' }}>{children}</Content>
+                <Content className='content' style={{ margin: '40px 16px' }}>{children[page - 1]}</Content>
             </Layout>
         </Layout>
     )

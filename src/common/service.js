@@ -4,21 +4,22 @@ const BASE = "/api"
 
 function Fetch(url, opt = {}) {
     opt.method = opt.method || 'GET';
-    opt.headers = {
+    const isFile = opt.body instanceof FormData
+
+    opt.headers = isFile ? {} :  {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-    };
+    }; 
+
+
     // if (url.includes('message')) {
     //     opt.headers = new Headers()
     //     opt.headers.append("Content-Type", "application/x-www-form-urlencoded");
     // }
     if (opt.body) {
-        opt.body = JSON.stringify(opt.body)
+        opt.body = isFile ? opt.body : json.stringify(opt.body)
     }
-    opt.body = JSON.stringify(opt.data) || null;
-    if (opt.formdata) {
-        opt.body = opt.formdata;
-    }
+    
     return fetch(url, opt)
         .then(response => {
             if (response.ok) {
@@ -40,13 +41,51 @@ function Fetch(url, opt = {}) {
 }
 
 let Service = {
-   // 获得随机用户名
-    rand() {
-        return Fetch(BASE + '/rand')
+//    // 获得随机用户名
+//     rand(id) {
+//         return Fetch(BASE + `/rand?id${id}`)
+//     },
+
+    //all
+    allInfo() {
+        return Fetch(BASE + '/file/review')
     },
-    // 提交数据
+
+    //detailinfo
+    detailInfo(id) {
+        return Fetch(BASE + `/file/review/id?=${id}/project`); 
+    },
+
+    //personalinfo
+    personalInfo(id) {
+        return Fetch(BASE + `/file/review/id?=${id}/manager`);
+    },
+
+    //unitinfo
+    unitInfo(id) {
+        return Fetch(BASE + `/file/review/id?=${id}/unit`);
+    },
+
+    //memberinfo
+    memberInfo(id) {
+        return Fetch(BASE + `/file/review/id?=${id}/member`);
+    },
+
+    //post
+    postFile(uploadFile) {
+        return Fetch(BASE + '/file/upload', {
+            method: 'POST',
+            data: {
+                file: uploadFile,
+            }
+        })
+    },
+
+
+
+    // 
     info(info) {
-        return Fetch(BASE + '/info', {
+        return Fetch(BASE + '/file/review', {
             method: 'POST',
             data: {
                 sex: info.sex,
@@ -71,33 +110,6 @@ let Service = {
             data: {
                 result: result,
                 group_id: `${group_id}`
-            }
-        })
-    },
-    // 提交quizA
-    postQuizA(user_name, group_id, time, sex, point, answer) {
-        return Fetch(BASE + '/q1', {
-            method: "POST",
-            data: {
-                user_name,
-                group_id,
-                point,
-                time,
-                sex,
-                answer
-            }
-        })
-    },
-    postQuizB(user_name, group_id, time, sex, point, answer) {
-        return Fetch(BASE + '/q2', {
-            method: "POST",
-            data: {
-                user_name,
-                group_id,
-                point,
-                time,
-                sex,
-                answer
             }
         })
     }
