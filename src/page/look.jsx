@@ -150,11 +150,30 @@ const columns1 = [
         key: 'birthday',
         dataIndex: 'birthday',
       },
-    ];    
+    ];  
+    
+    const columns5 = [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+        key: 'id',
+        render: text => <a>{test}</a>,
+      },
+      {
+        title: '项目基础与保障',
+        dataIndex: 'argument',
+        key: 'argument',
+      },
+      {
+        title: '项目论证信息',
+        dataIndex: 'guarantee',
+        key: 'guarantee'
+      }
+    ]
   
-    const data1 = [];
-    let data2, data3, data4;
-    const data = []
+const data1 = [];
+let data2, data3, data4;
+const data = [];
 
 
 
@@ -169,6 +188,7 @@ const Look = () => {
     const [data2, setData2] = useState()
     const [data3, setData3] = useState()
     const [data4, setData4] = useState()
+    const [data5, setData5] = useState()
 
 
     
@@ -215,6 +235,9 @@ const Look = () => {
                 Service.memberInfo(props).then((res) => {
                   setData4(res)
                 });
+                Service.textInfo(props).then((res) => {
+                  setData5(res)
+                })
             }}>访问</a>
         </Space>
         ),
@@ -244,6 +267,9 @@ const Look = () => {
                 </TabPane>
                 <TabPane tab="成员信息" key="4">
                     <Table columns={columns4} dataSource={data4} />
+                </TabPane>
+                <TabPane tab="正文" key="4">
+                    <Table columns={columns5} dataSource={data5} />
                 </TabPane>
             </Tabs>
         </div>

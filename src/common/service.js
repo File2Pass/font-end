@@ -36,10 +36,6 @@ function Fetch(url, opt = {}) {
 }
 
 let Service = {
-//    // 获得随机用户名
-//     rand(id) {
-//         return Fetch(BASE + `/rand?id${id}`)
-//     },
 
     //all
     allInfo() {
@@ -64,6 +60,11 @@ let Service = {
     //memberinfo
     memberInfo(id) {
         return Fetch(BASE + `/file/review/id?=${id}/member`);
+    },
+
+    //maintext
+    textInfo(id) {
+        return Fetch(BASE + `/file/review/id?=${id}/text`);
     },
 
     //post
